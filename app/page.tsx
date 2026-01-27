@@ -322,7 +322,7 @@ export default function Home() {
              </div>
              <div className="flex items-center gap-2 text-slate-500 text-xs font-mono">
                <Globe size={14} />
-               <span>Dubai → Russia → India</span>
+               <span>United Arab Emirates → Russia → India</span>
              </div>
           </div>
           
