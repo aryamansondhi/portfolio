@@ -284,6 +284,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="glass-card md:col-span-2 md:row-span-2 rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden cursor-pointer border border-white/5 hover:border-blue-500/30 transition-all"
         >
+          {/* Status Indicator (Top Right) */}
           <div className="absolute top-6 right-6 flex items-center gap-2">
             <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -295,7 +296,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="z-10 mt-8">
+          {/* PROFILE PICTURE (NEW - Top Left) */}
+          <div className="absolute top-6 left-6 w-24 h-24 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl z-20">
+             <img src="/me.jpg" alt="Aryaman" className="object-cover w-full h-full" />
+          </div>
+
+          <div className="z-10 mt-28"> {/* Increased top margin to clear the photo */}
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-500">
               Aryaman<br/>Sondhi
             </h1>
@@ -316,12 +322,10 @@ export default function Home() {
              </div>
              <div className="flex items-center gap-2 text-slate-500 text-xs font-mono">
                <Globe size={14} />
-               <span>Dubai &rarr; Russia &rarr; India</span>
+               <span>Dubai → Russia → India</span>
              </div>
           </div>
-          <div className="absolute top-6 left-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">
-             <ArrowUpRight size={24} />
-          </div>
+          
           <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-600/20 rounded-full blur-[100px] group-hover:bg-blue-600/30 transition-all duration-700" />
         </motion.div>
 
