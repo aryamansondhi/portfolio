@@ -485,7 +485,7 @@ export default function Home() {
         <DockIcon 
             icon={<Github size={20} />} 
             label="GitHub" 
-            href="https://github.com/aryaman-sondhi"
+            href="https://github.com/aryamansondhi"
         />
         <DockIcon 
             icon={<Mail size={20} />} 
