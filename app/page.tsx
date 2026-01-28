@@ -5,12 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Terminal, 
   ArrowUpRight, 
-  Cpu, 
-  Globe,
-  Github,
-  Linkedin,
-  Mail,
-  FileText,
   TrendingUp,
   Scan, 
   Briefcase,
@@ -19,11 +13,14 @@ import {
   Music,
   Headphones,
   Server,
-  Database
+  Linkedin,
+  Github,
+  Mail,
+  FileText,
+  Globe
 } from "lucide-react";
 
 // --- OPTIMIZED AUDIO ENGINE ---
-// Uses a single instance to prevent memory leaks and stutter
 const useAudio = () => {
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement | null }>({
     click: null,
@@ -32,21 +29,22 @@ const useAudio = () => {
   });
 
   useEffect(() => {
-    // Preload sounds only on client mount
-    audioRefs.current.click = new Audio("/sounds/click.mp3");
-    audioRefs.current.hover = new Audio("/sounds/hover.mp3");
-    audioRefs.current.boot = new Audio("/sounds/boot.mp3");
-    
-    // Set volumes
-    if (audioRefs.current.hover) audioRefs.current.hover.volume = 0.05;
-    if (audioRefs.current.click) audioRefs.current.click.volume = 0.2;
-    if (audioRefs.current.boot) audioRefs.current.boot.volume = 0.2;
+    // Only run on client
+    if (typeof window !== "undefined") {
+      audioRefs.current.click = new Audio("/sounds/click.mp3");
+      audioRefs.current.hover = new Audio("/sounds/hover.mp3");
+      audioRefs.current.boot = new Audio("/sounds/boot.mp3");
+      
+      if (audioRefs.current.hover) audioRefs.current.hover.volume = 0.05;
+      if (audioRefs.current.click) audioRefs.current.click.volume = 0.2;
+      if (audioRefs.current.boot) audioRefs.current.boot.volume = 0.2;
+    }
   }, []);
 
   const play = useCallback((type: "click" | "hover" | "boot") => {
     const sound = audioRefs.current[type];
     if (sound) {
-      sound.currentTime = 0; // Rewind to start for rapid firing
+      sound.currentTime = 0; 
       sound.play().catch(() => { /* Ignore auto-play blocks */ });
     }
   }, []);
@@ -69,7 +67,6 @@ const PORTFOLIO_DATA = {
         <p className="leading-relaxed">
           My day-to-day involves digging into complex requirements and turning them into production-ready C++ and PL/SQL code. I specialize in the parts of the system where the documentation is thin and the logic is heavy.
         </p>
-        
         <div className="border-t border-white/10 pt-4 mt-4">
           <h4 className="text-white font-bold mb-2">The Arsenal (Tech Stack)</h4>
           <div className="grid grid-cols-2 gap-2 text-sm text-slate-400">
@@ -95,7 +92,6 @@ const PORTFOLIO_DATA = {
         <p>
           She runs on the Groq LPU which makes her responses instant. I hooked her up to a local ChromaDB vector database so she actually remembers context from weeks ago.
         </p>
-        
         <div className="border-t border-white/10 pt-4 mt-4">
           <h4 className="text-white font-bold mb-2">Under The Hood:</h4>
           <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
@@ -104,14 +100,13 @@ const PORTFOLIO_DATA = {
             <li><strong>Persona:</strong> I hardcoded her to be sharp and witty (Suits style).</li>
           </ul>
         </div>
-
         <div className="bg-black/30 p-3 rounded-lg border border-white/10 font-mono text-[10px] text-green-400 mt-2 overflow-x-auto">
           <span className="text-purple-400">def</span> <span className="text-yellow-400">run_vision_thread</span>(self, user_query):<br/>
-            base64_image = mac.capture_screen()<br/>
-            completion = groq_client.chat.completions.create(<br/>
-              model=<span className="text-green-300">"meta-llama/llama-4-scout..."</span>,<br/>
-              messages=[{"{"}<span className="text-green-300">"image_url"</span>: base64_image{"}"}]<br/>
-            )
+          &nbsp;&nbsp;base64_image = mac.capture_screen()<br/>
+          &nbsp;&nbsp;completion = groq_client.chat.completions.create(<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;model=<span className="text-green-300">"meta-llama/llama-4-scout..."</span>,<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;messages=[{"{"}<span className="text-green-300">"image_url"</span>: base64_image{"}"}]<br/>
+          &nbsp;&nbsp;)
         </div>
       </div>
     )
@@ -129,7 +124,6 @@ const PORTFOLIO_DATA = {
         <p>
           The core logic monitors price deviations against long-term moving averages. When the market gets overheated (or crashes), the system signals a move to cash.
         </p>
-        
         <div className="border-t border-white/10 pt-4 mt-4">
           <h4 className="text-white font-bold mb-2">Key Engineering:</h4>
           <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
@@ -138,12 +132,11 @@ const PORTFOLIO_DATA = {
             <li><strong>Tech Stack:</strong> Streamlit, YFinance API, Matplotlib, NumPy.</li>
           </ul>
         </div>
-
         <div className="bg-black/30 p-3 rounded-lg border border-white/10 font-mono text-[10px] text-green-400 mt-2 overflow-x-auto">
           <span className="text-slate-500"># Vectorized "Risk Off" Mask</span><br/>
           is_risk_off = (<br/>
-            sig.rolling(window=cooldown, min_periods=1)<br/>
-            .max().shift(1).fillna(0).astype(<span className="text-purple-400">bool</span>)<br/>
+          &nbsp;&nbsp;sig.rolling(window=cooldown, min_periods=1)<br/>
+          &nbsp;&nbsp;.max().shift(1).fillna(0).astype(<span className="text-purple-400">bool</span>)<br/>
           )
         </div>
       </div>
@@ -162,7 +155,6 @@ const PORTFOLIO_DATA = {
         <p>
           It isn't just a motion detector. It uses Google's <strong>MediaPipe</strong> to map 33 skeletal landmarks on my body in real-time. I use NumPy to calculate the precise vector angle between my ear and shoulder.
         </p>
-        
         <div className="border-t border-white/10 pt-4 mt-4">
           <h4 className="text-white font-bold mb-2">Technical Implementation:</h4>
           <ul className="list-disc list-inside space-y-1 text-sm text-slate-400">
@@ -171,10 +163,9 @@ const PORTFOLIO_DATA = {
             <li><strong>Optimization:</strong> Runs at 30+ FPS on CPU by optimizing frame processing.</li>
           </ul>
         </div>
-
         <div className="bg-black/30 p-3 rounded-lg border border-white/10 font-mono text-[10px] text-green-400 mt-2 overflow-x-auto">
           <span className="text-purple-400">if</span> angle {">"} 105:<br/>
-            status = <span className="text-red-400">"SLOUCHING!"</span> <span className="text-slate-500"># Red Alert</span>
+          &nbsp;&nbsp;status = <span className="text-red-400">"SLOUCHING!"</span> <span className="text-slate-500"># Red Alert</span>
         </div>
       </div>
     )
@@ -256,14 +247,12 @@ const PORTFOLIO_DATA = {
               I started properly watching during <strong>Robin van Persie's PL win season (2012/13)</strong>. It was the perfect introduction—Sir Alex's final bow, title number 20, and pure dominance.
             </p>
         </div>
-        
         <div className="mt-4">
             <h4 className="text-white font-bold mb-1">The Icon</h4>
             <p className="text-sm text-slate-400">
               While RVP was the spark, <strong>Wayne Rooney</strong> is the soul. To me, a Red Manchester United will always be associated with him—the grit, the range, and the passion.
             </p>
         </div>
-
         <div className="mt-4">
             <h4 className="text-white font-bold mb-1">The Memory</h4>
             <p className="text-sm text-slate-400">
@@ -319,10 +308,10 @@ const BootScreen = ({ onComplete }: { onComplete: () => void }) => {
   }, [playSfx, onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-slate-950 z-[100] flex items-center justify-center font-mono text-green-500 text-sm md:text-base p-8">
+    <div className="fixed inset-0 bg-slate-950 z-100 flex items-center justify-center font-mono text-green-500 text-sm md:text-base p-8">
       <div className="max-w-xl w-full space-y-2">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-between border-b border-green-900 pb-2 mb-4">
-           <span>ARYAMAN.OS [Version 3.1.0]</span>
+           <span>ARYAMAN.OS [Version 3.2.0]</span>
            <span>SECURE BOOT</span>
         </motion.div>
         <div className="space-y-1">
@@ -351,11 +340,9 @@ export default function Home() {
   const frameRef = useRef<number>(0);
 
   // --- OPTIMIZED SPOTLIGHT LOGIC (rAF) ---
-  // This ensures the mouse calculation only runs at 60fps, not the mouse polling rate (1000hz)
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return;
     
-    // Cancel previous frame to prevent stacking
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
 
     frameRef.current = requestAnimationFrame(() => {
@@ -386,7 +373,6 @@ export default function Home() {
         
         {/* === ANIMATED BACKGROUND (GPU ACCELERATED) === */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none transform-gpu">
-          {/* Moving Grid */}
           <motion.div 
             animate={{ backgroundPosition: ["0% 0%", "100% 100%"] }}
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
@@ -396,20 +382,19 @@ export default function Home() {
               backgroundSize: '32px 32px' 
             }}
           />
-          {/* Nebulas */}
           <motion.div 
             animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2], x: [0, 50, 0], y: [0, -30, 0] }}
             transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-blue-900/30 rounded-full blur-[100px] will-change-transform"
+            className="absolute top-[-20%] left-[-10%] w-200 h-200 bg-blue-900/30 rounded-full blur-[100px] will-change-transform"
           />
           <motion.div 
             animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1], x: [0, -50, 0], y: [0, 30, 0] }}
             transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-emerald-900/20 rounded-full blur-[80px] will-change-transform"
+            className="absolute bottom-[-20%] right-[-10%] w-150 h-150 bg-emerald-900/20 rounded-full blur-[80px] will-change-transform"
           />
         </div>
 
-        {/* MAIN GRID */}
+        {/* MAIN GRID - FIXED HEIGHT WARNING */}
         {!booting && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
@@ -440,6 +425,7 @@ export default function Home() {
               </div>
 
               <div className="z-10 mt-28"> 
+                {/* FIXED: GRADIENT SYNTAX */}
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-linear-to-br from-white to-slate-500">
                   Aryaman<br/>Sondhi
                 </h1>
@@ -575,6 +561,7 @@ export default function Home() {
                onHover={() => playSfx("hover")}
                className="flex items-center justify-center hover:border-red-600/30"
             >
+              {/* FIXED: GRADIENT SYNTAX */}
               <div className="absolute inset-0 bg-linear-to-br from-red-900/20 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <span className="text-4xl font-black text-red-600/80 z-10 group-hover:scale-110 transition-transform duration-300">MUFC</span>
             </PortfolioCard>
@@ -594,7 +581,7 @@ export default function Home() {
             <DockIcon icon={<Github size={20} />} label="GitHub" href="https://github.com/aryamansondhi" playSfx={playSfx} />
             <DockIcon icon={<Mail size={20} />} label="Email" href="mailto:aryamanpsu@gmail.com" playSfx={playSfx} />
             <DockIcon icon={<Music size={20} />} label="Apple Music" href="https://music.apple.com/profile/aryamansondhi" playSfx={playSfx} />
-            <DockIcon icon={<Headphones size={20} />} label="Spotify" href="https://open.spotify.com/user/31dfokarhdku4gkn7ndbeq5j2c3e?si=ba3cebdb6a8640e1" playSfx={playSfx} />
+            <DockIcon icon={<Headphones size={20} />} label="Spotify" href="https://open.spotify.com/user/31dfokarhdku4gkn7ndbeq5j2c3e?si=T6E49UstTt-9U2_igerKbg" playSfx={playSfx} />
             <div className="w-px h-6 bg-slate-700 mx-2" /> 
             <DockIcon icon={<FileText size={20} />} label="Resume" href="/resume.pdf" isDownload={true} playSfx={playSfx} />
           </motion.div>
@@ -609,14 +596,14 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setActiveCard(null)}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-60"
               />
               
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="fixed inset-0 m-auto w-[90%] md:w-[600px] h-fit max-h-[80vh] bg-[#0f172a] border border-slate-700 rounded-3xl p-8 z-[70] shadow-2xl overflow-y-auto"
+                className="fixed inset-0 m-auto w-[90%] md:w-150 h-fit max-h-[80vh] bg-[#0f172a] border border-slate-700 rounded-3xl p-8 z-70 shadow-2xl overflow-y-auto"
               >
                 <button 
                   onClick={() => { setActiveCard(null); playSfx("click"); }}
@@ -645,6 +632,7 @@ export default function Home() {
                   
                   {selectedItem.media && (
                       <div className="mb-6 rounded-xl overflow-hidden border border-white/10 bg-black/20">
+                          {/* FIXED: Fallback || "" ensures TypeScript knows it's a string */}
                           <img 
                               src={selectedItem.media || ""} 
                               alt="Project Demo" 
@@ -668,14 +656,12 @@ export default function Home() {
   );
 }
 
-// Wrapper for Cards to handle the Spotlight Effect
 function PortfolioCard({ children, onClick, onHover, className }: { children: React.ReactNode, onClick: () => void, onHover: () => void, className?: string }) {
   return (
     <motion.div 
       onClick={onClick}
       onMouseEnter={onHover}
       className={`glass-card rounded-3xl p-6 flex flex-col justify-between group relative overflow-hidden cursor-pointer border border-white/5 transition-colors ${className}`}
-      // This radial gradient creates the spotlight effect using CSS variables set on the parent
       style={{
         background: `radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%)`
       }}
